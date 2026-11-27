@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Platforms>AnyCPU;x64</Platforms>
+		<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Optic.Audit\Optic.Audit.csproj" ReferenceOutputAssembly="true" PrivateAssets="all" />
+
+		<ProjectReference Include="..\Optic.Identity\Optic.Identity.csproj" ReferenceOutputAssembly="true" PrivateAssets="all" />
+
+		<ProjectReference Include="..\Optic.Notification\Optic.Notification.csproj" ReferenceOutputAssembly="true" PrivateAssets="all" />
+	</ItemGroup>
+
+	<Target Name="RemoveModuleContentFromHostPublish" BeforeTargets="_ComputeFilesToPublish">
+
+		<ItemGroup>
+			<Content Remove="@(Content)" Condition="'%(Content.Identity)' != '' and&#xA;                 ($([System.String]::Copy('%(Content.FullPath)').Contains('\Optic.Audit\')) or&#xA;                  $([System.String]::Copy('%(Content.FullPath)').Contains('\Optic.Identity\')) or&#xA;                  $([System.String]::Copy('%(Content.FullPath)').Contains('\Optic.Notification\')))" />
+
+			<None Remove="@(None)" Condition="'%(None.Identity)' != '' and&#xA;                 ($([System.String]::Copy('%(None.FullPath)').Contains('\Optic.Audit\')) or&#xA;                  $([System.String]::Copy('%(None.FullPath)').Contains('\Optic.Identity\')) or&#xA;                  $([System.String]::Copy('%(None.FullPath)').Contains('\Optic.Notification\')))" />
+		</ItemGroup>
+
+	</Target>
+
+	<!-- Publish modules separately -->
+	<Target Name="PublishOpticModules" AfterTargets="Publish" Condition="'$(PublishModules)' == 'true'">
+
+		<PropertyGroup>
+			<ModulesPublishRoot>$(MSBuildProjectDirectory)\..\Publish\ModulesPublish</ModulesPublishRoot>
+		</PropertyGroup>
+
+		<MSBuild Projects="$(MSBuildProjectDirectory)\..\Optic.Identity\Optic.Identity.csproj" Targets="Publish" Properties="Configuration=$(Configuration);PublishDir=$(ModulesPublishRoot)\Optic.Identity\;PublishModules=false" />
+
+		<MSBuild Projects="$(MSBuildProjectDirectory)\..\Optic.Audit\Optic.Audit.csproj" Targets="Publish" Properties="Configuration=$(Configuration);PublishDir=$(ModulesPublishRoot)\Optic.Audit\;PublishModules=false" />
+
+		<MSBuild Projects="$(MSBuildProjectDirectory)\..\Optic.Notification\Optic.Notification.csproj" Targets="Publish" Properties="Configuration=$(Configuration);PublishDir=$(ModulesPublishRoot)\Optic.Notification\;PublishModules=false" />
+
+	</Target>
+
+</Project>

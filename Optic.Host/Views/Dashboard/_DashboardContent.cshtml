@@ -1,0 +1,63 @@
+﻿@model Optic.Host.Models.Dashboard.DashboardViewModel
+
+<div data-ajax-page data-page-title="Dashboard">
+
+    <div class="dashboard-header mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Dashboard</h2>
+            <p class="text-muted mb-0">
+                Welcome to your OPTIC workspace.
+            </p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+
+        @foreach (var application in Model.Applications)
+        {
+            <div class="col-xl-4 col-md-6">
+
+                <a href="@application.ModulePath"
+                   data-ajax-nav
+                   class="text-decoration-none">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body p-4">
+
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+
+                                <div class="rounded-3 bg-primary bg-opacity-10 p-3">
+                                    <i class="@application.Icon fs-3 text-primary"></i>
+                                </div>
+
+                                <i class="bi bi-arrow-up-right text-muted"></i>
+
+                            </div>
+
+                            <h5 class="fw-bold text-dark">
+                                @application.ApplicationName
+                            </h5>
+
+                            <p class="text-muted mb-0">
+                                @application.Description
+                            </p>
+
+                        </div>
+                    </div>
+
+                </a>
+
+            </div>
+        }
+
+        @if (!Model.Applications.Any())
+        {
+            <div class="col-12">
+                <div class="alert alert-info">
+                    No applications are currently assigned to your account.
+                </div>
+            </div>
+        }
+
+    </div>
+
+</div>

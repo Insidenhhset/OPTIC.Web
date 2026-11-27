@@ -1,0 +1,7 @@
+﻿@model IEnumerable<Optic.Audit.Models.AuditLog>
+
+@{
+    ViewData["Title"] = "Audit Trail";
+}
+
+@await Html.PartialAsync("_IndexContent", Model)

@@ -1,0 +1,179 @@
+﻿@using Optic.Identity.Models.RoleManagement
+
+@{
+    var stats = ViewData["RoleDashboardStats"] as RoleManagementDashboardStats;
+}
+
+<div data-ajax-page data-page-title="Role Management">
+
+    <!-- Dashboard Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Role Management</h2>
+            <p class="text-secondary mb-0">
+                Manage role definitions, application mappings and user assignments.
+            </p>
+        </div>
+
+        <div class="text-secondary">
+            <i class="bi bi-shield-check me-1"></i>
+            Identity Module
+        </div>
+    </div>
+
+    <!-- Analytics Cards -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-12 col-sm-6 col-xl-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-secondary small mb-1">Total Roles</p>
+                            <h3 class="fw-bold mb-0">@(stats?.TotalRoles ?? 0)</h3>
+                        </div>
+                        <div class="identity-card-icon">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+                    </div>
+                    <small class="text-secondary">Defined role records</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-secondary small mb-1">Application Mappings</p>
+                            <h3 class="fw-bold mb-0">@(stats?.TotalApplicationMappings ?? 0)</h3>
+                        </div>
+                        <div class="identity-card-icon">
+                            <i class="bi bi-diagram-3"></i>
+                        </div>
+                    </div>
+                    <small class="text-secondary">Configured application roles</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-secondary small mb-1">Active Assignments</p>
+                            <h3 class="fw-bold mb-0">@(stats?.ActiveAssignments ?? 0)</h3>
+                        </div>
+                        <div class="identity-card-icon">
+                            <i class="bi bi-person-check"></i>
+                        </div>
+                    </div>
+                    <small class="text-secondary">Active user-role assignments</small>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Role Management Navigation -->
+    <div class="mb-3">
+        <h5 class="fw-semibold mb-1">Role Management</h5>
+        <p class="text-secondary small mb-0">
+            Select an area to manage.
+        </p>
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-12 col-sm-6 col-xl-4">
+            <a href="/IdentityRoles/Master"
+               data-ajax-nav
+               class="text-decoration-none text-reset">
+                <div class="card h-100 border-0 shadow-sm identity-dashboard-card">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+                            <div class="identity-card-icon">
+                                <i class="bi bi-shield-check"></i>
+                            </div>
+                            <i class="bi bi-arrow-up-right text-secondary fs-5"></i>
+                        </div>
+                        <h5 class="fw-semibold mb-2">Role Master</h5>
+                        <p class="text-secondary small mb-0">
+                            Create, edit and manage role definitions.
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-4">
+            <a href="/IdentityRoles/ApplicationMappings"
+               data-ajax-nav
+               class="text-decoration-none text-reset">
+                <div class="card h-100 border-0 shadow-sm identity-dashboard-card">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+                            <div class="identity-card-icon">
+                                <i class="bi bi-diagram-3"></i>
+                            </div>
+                            <i class="bi bi-arrow-up-right text-secondary fs-5"></i>
+                        </div>
+                        <h5 class="fw-semibold mb-2">Application Role Mapping</h5>
+                        <p class="text-secondary small mb-0">
+                            Configure roles available within each application.
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-4">
+            <a href="/IdentityRoles/UserAssignments"
+               data-ajax-nav
+               class="text-decoration-none text-reset">
+                <div class="card h-100 border-0 shadow-sm identity-dashboard-card">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+                            <div class="identity-card-icon">
+                                <i class="bi bi-person-check"></i>
+                            </div>
+                            <i class="bi bi-arrow-up-right text-secondary fs-5"></i>
+                        </div>
+                        <h5 class="fw-semibold mb-2">User Role Assignment</h5>
+                        <p class="text-secondary small mb-0">
+                            Assign roles to users and manage existing assignments.
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+    .identity-dashboard-card {
+        border-radius: 14px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .identity-dashboard-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.09) !important;
+        }
+
+    .identity-card-icon {
+        width: 52px;
+        height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        background: var(--bs-primary-bg-subtle);
+        color: var(--bs-primary);
+        font-size: 1.5rem;
+    }
+</style>

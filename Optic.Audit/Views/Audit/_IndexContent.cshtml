@@ -1,0 +1,78 @@
+﻿@model IEnumerable<Optic.Audit.Models.AuditLog>
+
+<div data-ajax-page data-page-title="Audit Trail">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold mb-1">Audit Trail</h2>
+            <p class="text-muted mb-0">
+                Monitor and review recent system activities.
+            </p>
+        </div>
+
+        <button type="button"
+                class="btn btn-outline-primary"
+                onclick="window.OpticAjax.navigate('/Audit/Index')">
+
+            <i class="bi bi-arrow-clockwise me-1"></i>
+            Refresh
+
+        </button>
+
+    </div>
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Module</th>
+                            <th>Action</th>
+                            <th>Description</th>
+                            <th>IP Address</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @if (Model != null && Model.Any())
+                        {
+                            @foreach (var activity in Model)
+                            {
+                                <tr>
+                                    <td>@activity.UserName</td>
+                                    <td>@activity.ModuleName</td>
+                                    <td>@activity.Action</td>
+                                    <td>@activity.Description</td>
+                                    <td>@activity.IpAddress</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5"
+                                    class="text-center text-muted py-4">
+                                    No audit activities found.
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

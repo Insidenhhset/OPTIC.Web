@@ -1,0 +1,105 @@
+
+html {
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background-color: #f5f7fb;
+    color: #263247;
+}
+
+/* Navigation */
+
+.optic-navbar {
+    background: #17243b;
+    min-height: 68px;
+}
+
+    .optic-navbar .navbar-brand {
+        letter-spacing: 1.5px;
+        color: #ffffff;
+    }
+
+    .optic-navbar .nav-link {
+        color: #d4dbea;
+        padding: 10px 18px;
+    }
+
+        .optic-navbar .nav-link:hover,
+        .optic-navbar .nav-link.active {
+            color: #ffffff;
+        }
+
+/* Main content */
+
+.main-content {
+    flex: 1;
+}
+
+.dashboard-header {
+    padding: 12px 0 18px;
+}
+
+/* Module cards */
+
+.module-card {
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border: 1px solid #e5eaf1;
+    border-radius: 12px;
+    padding: 26px;
+    min-height: 250px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .module-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(20, 40, 70, 0.09);
+    }
+
+    .module-card p {
+        line-height: 1.7;
+        margin-bottom: 24px;
+    }
+
+    .module-card .btn {
+        align-self: flex-start;
+    }
+
+/* Module icons */
+
+.module-icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+}
+
+.audit-icon {
+    background: #e8f0ff;
+    color: #2764c5;
+}
+
+.notification-icon {
+    background: #e5f7f1;
+    color: #168b68;
+}
+
+/* Footer */
+
+.optic-footer {
+    background: #ffffff;
+    border-top: 1px solid #e5eaf1;
+    padding: 18px 0;
+    color: #7a8699;
+    font-size: 13px;
+}

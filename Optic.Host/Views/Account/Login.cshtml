@@ -1,0 +1,254 @@
+﻿@model Optic.Host.Models.Account.LoginViewModel
+
+@{
+    Layout = null;
+    ViewData["Title"] = "OPTIC | Sign In";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>@ViewData["Title"]</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+    <link rel="stylesheet"
+          href="~/css/login.css"
+          asp-append-version="true" />
+</head>
+
+<body>
+
+    <div class="login-layout">
+
+        <!-- LEFT BRAND PANEL -->
+
+        <section class="login-brand-panel">
+
+            <div class="pattern-circle circle-one"></div>
+            <div class="pattern-circle circle-two"></div>
+            <div class="pattern-circle circle-three"></div>
+
+            <div class="brand-logo">
+                OPTIC<span>.</span>
+            </div>
+
+            <div class="brand-content">
+
+                <div class="brand-label">
+                    Enterprise Platform
+                </div>
+
+                <h1>
+                    One Platform.<br />
+                    <span>Unified Control.</span>
+                </h1>
+
+                <p>
+                    A centralized enterprise platform designed to simplify
+                    identity management, access control, audit monitoring
+                    and organizational operations.
+                </p>
+
+                <div class="brand-features">
+                    <div class="brand-feature">Identity Management</div>
+                    <div class="brand-feature">Access Control</div>
+                    <div class="brand-feature">Audit & Monitoring</div>
+                </div>
+
+            </div>
+
+            <div class="brand-footer">
+                © @DateTime.Now.Year OPTIC. All rights reserved.
+            </div>
+
+        </section>
+
+        <!-- RIGHT LOGIN PANEL -->
+
+        <main class="login-form-panel">
+
+            <div class="login-container">
+
+                <div class="mobile-brand">
+                    OPTIC<span>.</span>
+                </div>
+
+                <div class="login-heading">
+                    <h2>Welcome back</h2>
+                    <p>Enter your credentials to access your account.</p>
+                </div>
+
+                <form id="loginForm"
+                      asp-controller="Account"
+                      asp-action="Login"
+                      method="post">
+
+                    @Html.AntiForgeryToken()
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="text-danger small mb-3"></div>
+
+                    <div class="mb-4">
+                        <label asp-for="Username" class="form-label">
+                            Username
+                        </label>
+
+                        <input asp-for="Username"
+                               class="form-control"
+                               placeholder="Enter your username"
+                               autocomplete="username"
+                               required />
+
+                        <span asp-validation-for="Username"
+                              class="text-danger small"></span>
+                    </div>
+
+
+
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label">
+                            Password
+                        </label>
+
+                        <div class="password-wrapper">
+                            <input asp-for="Password"
+                                   type="password"
+                                   id="loginPassword"
+                                   class="form-control"
+                                   placeholder="Enter your password"
+                                   autocomplete="current-password"
+                                   required />
+
+                            <button type="button"
+                                    class="password-toggle"
+                                    id="togglePassword"
+                                    aria-label="Show password"
+                                    title="Show password">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+
+                        <span asp-validation-for="Password"
+                              class="text-danger small"></span>
+                    </div>
+
+
+
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="form-check">
+                            <input asp-for="RememberMe"
+                                   class="form-check-input" />
+
+                            <label asp-for="RememberMe"
+                                   class="form-check-label">
+                                Remember me
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit"
+                            id="loginButton"
+                            class="btn btn-login w-100">
+
+                        <span id="loginButtonText">Sign In</span>
+
+                        <span id="loginSpinner"
+                              class="spinner-border login-spinner ms-2 d-none"
+                              role="status"
+                              aria-hidden="true"></span>
+
+                    </button>
+
+                    <div id="loginStatus"
+                         class="login-status"
+                         role="status"
+                         aria-live="polite"></div>
+
+                </form>
+
+                <div class="login-footer">
+                    Secure access to your enterprise workspace.
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    <script>
+        (() => {
+            const loginForm = document.getElementById("loginForm");
+            const loginButton = document.getElementById("loginButton");
+            const loginButtonText = document.getElementById("loginButtonText");
+            const loginSpinner = document.getElementById("loginSpinner");
+            const loginStatus = document.getElementById("loginStatus");
+
+            let submitting = false;
+            
+            const passwordInput = document.getElementById("loginPassword");
+            const togglePassword = document.getElementById("togglePassword");
+
+            togglePassword.addEventListener("click", function () {
+
+                const isHidden = passwordInput.type === "password";
+
+                passwordInput.type = isHidden ? "text" : "password";
+
+                togglePassword.innerHTML = isHidden
+                    ? '<i class="bi bi-eye-slash"></i>'
+                    : '<i class="bi bi-eye"></i>';
+
+                togglePassword.setAttribute(
+                    "aria-label",
+                    isHidden ? "Hide password" : "Show password"
+                );
+
+                togglePassword.setAttribute(
+                    "title",
+                    isHidden ? "Hide password" : "Show password"
+                );
+            });
+
+
+            loginForm.addEventListener("submit", function (event) {
+
+                if (window.jQuery && $(loginForm).data("validator")) {
+                    if (!$(loginForm).valid()) {
+                        event.preventDefault();
+                        loginStatus.textContent = "";
+                        return;
+                    }
+                }
+                else if (!loginForm.checkValidity()) {
+                    event.preventDefault();
+                    loginForm.reportValidity();
+                    loginStatus.textContent = "";
+                    return;
+                }
+
+                if (submitting) {
+                    event.preventDefault();
+                    return;
+                }
+
+                submitting = true;
+                loginButton.disabled = true;
+                loginButtonText.textContent = "Signing in...";
+                loginSpinner.classList.remove("d-none");
+
+                loginStatus.textContent =
+                    "Verifying your credentials. Please wait...";
+            });
+        })();
+    </script>
+
+</body>
+</html>

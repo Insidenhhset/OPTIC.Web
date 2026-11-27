@@ -1,0 +1,412 @@
+﻿@{
+    Layout = null;
+}
+
+<div data-ajax-page data-page-title="User Management" id="usersPage">
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">User Management</h2>
+            <p class="text-secondary mb-0">Manage employee identities and user accounts.</p>
+        </div>
+
+        <button class="btn btn-primary" id="btnAddUser">
+            <i class="bi bi-plus-lg me-1"></i> Add User
+        </button>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-3">
+                <h5 class="fw-semibold mb-0">Registered Users</h5>
+
+                <input type="search"
+                       id="userSearch"
+                       class="form-control"
+                       placeholder="Search users..."
+                       style="max-width:300px;" />
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Employee</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Mobile</th>
+                            <th>Status</th>
+                            <th>Last Login</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <tr>
+                            <td colspan="7" class="text-center py-4 text-secondary">
+                                Loading users...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="small text-secondary" id="usersCount"></div>
+        </div>
+    </div>
+
+    <!-- Add / Edit User Modal -->
+
+    <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+
+                <form id="userForm" enctype="multipart/form-data">
+
+                    <!-- Header -->
+                    <div class="modal-header px-4 py-3">
+                        <div>
+                            <h5 class="modal-title fw-semibold mb-1" id="userModalTitle">
+                                Add User
+                            </h5>
+                            <small class="text-secondary">
+                                Manage employee account information
+                            </small>
+                        </div>
+
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+
+                    <!-- Body -->
+                    <div class="modal-body p-4">
+
+                        <input type="hidden" id="userId" />
+
+                        <!-- Profile section -->
+                        <div class="d-flex align-items-center gap-3 p-3 mb-4 rounded-3 border bg-light-subtle">
+
+                            <div id="profilePreview"
+                                 class="rounded-circle bg-primary-subtle text-primary
+                                    d-flex align-items-center justify-content-center
+                                    fw-bold flex-shrink-0 overflow-hidden"
+                                 style="width:76px;height:76px;font-size:24px;">
+                                ?
+                            </div>
+
+                            <div class="flex-grow-1">
+                                <label for="ProfilePicture" class="form-label fw-semibold mb-1">
+                                    Profile Picture
+                                </label>
+
+                                <input type="file"
+                                       class="form-control"
+                                       id="ProfilePicture"
+                                       accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" />
+
+                                <small class="text-secondary d-block mt-1">
+                                    Optional. JPG, PNG or WebP. Maximum 2 MB.
+                                </small>
+                            </div>
+                        </div>
+
+                        <!-- Employee information -->
+                        <h6 class="fw-semibold mb-3">Employee Information</h6>
+
+                        <div class="row g-3">
+
+
+                            <div class="col-md-6">
+                                <label for="EmployeeCode" class="form-label">
+                                    Employee Code <span class="text-danger">*</span>
+                                </label>
+
+                                <input type="text"
+                                       class="form-control"
+                                       id="EmployeeCode"
+                                       placeholder="e.g. EMP001"
+                                       maxlength="50"
+                                       required />
+
+                                <div class="invalid-feedback" id="EmployeeCode-error"></div>
+                            </div>
+
+
+
+                            <div class="col-md-6">
+                                <label for="Username" class="form-label">
+                                    Username <span class="text-danger">*</span>
+                                </label>
+
+                                <input type="text"
+                                       class="form-control"
+                                       id="Username"
+                                       placeholder="Enter username"
+                                       maxlength="100"
+                                       autocomplete="username"
+                                       required />
+
+                                <div class="invalid-feedback" id="Username-error"></div>
+                            </div>
+
+
+                            <div class="col-md-6">
+                                <label for="FirstName" class="form-label">
+                                    First Name <span class="text-danger">*</span>
+                                </label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="FirstName"
+                                       placeholder="Enter first name"
+                                       maxlength="100"
+                                       required />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="LastName" class="form-label">
+                                    Last Name <span class="text-danger">*</span>
+                                </label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="LastName"
+                                       placeholder="Enter last name"
+                                       maxlength="100"
+                                       required />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="Email" class="form-label">
+                                    Email Address <span class="text-danger">*</span>
+                                </label>
+                                <input type="email"
+                                       class="form-control"
+                                       id="Email"
+                                       placeholder="employee@company.com"
+                                       maxlength="256"
+                                       autocomplete="email"
+                                       required />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="Mobile" class="form-label">Mobile Number</label>
+                                <input type="tel"
+                                       class="form-control"
+                                       id="Mobile"
+                                       placeholder="Enter mobile number"
+                                       maxlength="20"
+                                       autocomplete="tel" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="EmployeeTypeId" class="form-label">
+                                    Employee Type ID <span class="text-danger">*</span>
+                                </label>
+                                <input type="number"
+                                       class="form-control"
+                                       id="EmployeeTypeId"
+                                       min="1"
+                                       placeholder="Enter employee type ID"
+                                       required />
+                            </div>
+
+                        </div>
+
+                        <!-- Account security -->
+                        <div id="passwordGroup" class="mt-4">
+                            <hr class="my-4" />
+
+                            <h6 class="fw-semibold mb-3">Account Security</h6>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="Password" class="form-label">
+                                        Initial Password <span class="text-danger">*</span>
+                                    </label>
+
+                                    <div class="input-group">
+                                        <input type="password"
+                                               class="form-control"
+                                               id="Password"
+                                               minlength="8"
+                                               maxlength="128"
+                                               autocomplete="new-password"
+                                               placeholder="Enter initial password"
+                                               required />
+
+                                        <button class="btn btn-outline-secondary"
+                                                type="button"
+                                                data-toggle-password="Password"
+                                                aria-label="Show password">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                    </div>
+
+                                    <small class="text-secondary">
+                                        Minimum 8 characters. Required when creating a user.
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Account status: edit only -->
+                        <div id="activeGroup" class="d-none mt-4">
+                            <hr class="my-4" />
+
+                            <h6 class="fw-semibold mb-3">Account Status</h6>
+
+                            <div class="form-check form-switch">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       role="switch"
+                                       id="IsActive"
+                                       checked />
+
+                                <label class="form-check-label fw-medium" for="IsActive">
+                                    Active account
+                                </label>
+
+                                <div class="form-text">
+                                    Inactive users will not be able to access the application.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Error message -->
+                        <div class="alert alert-danger d-none mt-4 mb-0"
+                             id="userFormError"
+                             role="alert"
+                             aria-live="polite"></div>
+
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="modal-footer px-4 py-3">
+                        <button type="button"
+                                class="btn btn-light"
+                                data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+
+                        <button type="submit"
+                                class="btn btn-primary px-4"
+                                id="btnSaveUser">
+
+                            <span class="save-text">Save User</span>
+
+                            <span class="spinner-border spinner-border-sm d-none ms-1"
+                                  id="saveSpinner"
+                                  aria-hidden="true"></span>
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- View User Modal -->
+    <div class="modal fade" id="viewUserModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-semibold">User Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row g-3" id="userDetails"></div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Deactivate Confirmation Modal -->
+    <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-body text-center p-4">
+                    <div class="fs-1 text-danger mb-3">
+                        <i class="bi bi-exclamation-circle"></i>
+                    </div>
+                    <h5 class="fw-semibold">Deactivate User?</h5>
+                    <p class="text-secondary mb-0" id="deleteUserMessage">
+                        Are you sure you want to deactivate this user?
+                    </p>
+                </div>
+                <div class="modal-footer justify-content-center border-0 pt-0">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="btnConfirmDelete">
+                        Deactivate
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+                        <style>
+    /* Add / Edit User Modal */
+    #userModal .modal-dialog {
+        width: calc(100% - 2rem);
+        max-width: 850px;
+        height: calc(100vh - 2rem);
+        margin: 1rem auto;
+    }
+
+    #userModal .modal-content {
+        height: 100%;
+        max-height: 100%;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    /* Form fills modal content */
+    #userModal #userForm {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    /* Fixed header */
+    #userModal .modal-header {
+        flex: 0 0 auto;
+    }
+
+    /* Scrollable form section */
+    #userModal .modal-body {
+        flex: 1 1 0;
+        min-height: 0;
+        height: 0;
+        overflow-y: auto !important;
+        overflow-x: hidden;
+        overscroll-behavior: contain;
+    }
+
+    /* Fixed footer */
+    #userModal .modal-footer {
+        flex: 0 0 auto;
+        border-top: 1px solid #dee2e6;
+        background: #fff;
+    }
+
+    /* Mobile */
+    @@media (max-width: 576px) {
+        #userModal .modal-dialog {
+            width: calc(100% - 1rem);
+            height: calc(100vh - 1rem);
+            margin: 0.5rem auto;
+        }
+    }
+</style>
